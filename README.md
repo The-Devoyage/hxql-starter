@@ -9,7 +9,7 @@ gut the source code and start your own project.
 
 ```bash
 cargo install hxql
-hxql init <NAME>
+hxql init --name <APP_NAME>
 ```
 
 2. Use the hxql CLI to start the server.
