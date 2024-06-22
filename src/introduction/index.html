@@ -1,0 +1,44 @@
+<section>
+  <span class="htmx-indicator" id="loading">Loading...</span>
+  <h2>Build dynamic apps powered by htmx, subraph, and graphql.</h2>
+  <p>Near zero boilerplate. Focus on your app, not the setup.</p>
+  <h3>Features</h3>
+  <ul>
+    <li>Dynamic Content Loading</li>
+    <li><em>Recursive</em> Directory Routing</li>
+    <ul>
+      <li>Automatically serve any file from the SSR or Assets Directory, defined in `api.toml`.</li>
+      <ul>
+        <li>Ex: File located at `/src/blog/index.html` can be accessed at `https://your-site.com/blog`</li>
+      </ul>
+      <li>Access a folder that does not exist will trigger a recursive search for the closest match.</li>
+      <ul>
+        <li>
+          Recursive routing allows you to use parent directories as templates, rather than having to define repetitive
+          code.
+        </li>
+        <li>
+          Ex: Accessing Non Existent Directory `/src/blog/my-first-post` will return the closed match,
+          `/src/blog/index.html`
+        </li>
+        <li>
+          In this example, the `index.html` file in the `blog` directory will be used as a template for the
+          `my-first-post`.
+        </li>
+      </ul>
+    </ul>
+    <li>Public GraphQL API</li>
+    <ul>
+      <li>Define your API in `api.toml` and access it at `https://your-site.com/playground` or
+        `https://your-site.com/graphql`</li>
+      <li>This configuration is used with Subgraph, a powerful tool to create dynamic APIs that connect to various data
+        sources.</li>
+    </ul>
+    <li>Handlebars Templating</li>
+    <ul>
+      <li>In combination with subgraph and htmx, handlebars allows you to create dynamic content with ease.</li>
+      <li>Simply pass a query to the `hx-vals` property and data from your API is automatically available in your
+        template.</li>
+    </ul>
+  </ul>
+</section>

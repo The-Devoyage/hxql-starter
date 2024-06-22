@@ -1,0 +1,9 @@
+[service]
+name = "hxql-starter"
+port = 4444
+data_sources = []
+# license_key = "$ENV_TO_LICENSE_KEY" - get your license key at https://www.thedevoyage.com/subgraph/intro
+
+[service.serve.ssr]
+path = "./src"
+enable_hydrate = true

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hxql App</title>
+  <meta name="description"
+    content="Dynamic application built with graphql and htmx, powered by @the-devoyage/subgraph." />
+  <meta name="author" content="https://www.github.com/the-devoyage">
+
+  <link rel="stylesheet" href="/styles.css">
+
+  <!-- Htmx.js CDN -->
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+
+  <!-- Showdown.js CDN -->
+  <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+  <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+
+  <!-- Highlight.js CDN -->
+  <link rel="stylesheet" href="/docs/highlight-theme.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/languages/javascript.min.js"></script>
+
+  <!-- Hxql.js CDN -->
+  <script src="https://unpkg.com/hxql@0.0.12/dist/hxql.umd.min.js"></script>
+</head>
+
+<body>
+  <section class="card card--no-border">
+    <div class="card__header">
+      <h1 class="card__title">My Hxql App</h1>
+      <div class="tabs">
+        <a id="home" href="/" class="tab">Home</a>
+        <a id="docs" href="/docs" class="tab">Docs</a>
+        <a id="blog" href="/blog" class="tab">Blog</a>
+        <a href="https://www.github.com/the-devoyage/hxql" class="tab" target="_blank">Github</a>
+      </div>
+    </div>
+    <div style="display: flex;">
+      <div class="tabs__column">
+        <div id="docs" hx-get="/docs/index.md" hx-target="#content" class="tab" hx-swap="transition:true"
+          hx-on:click="handleClick('/docs')">Getting Started</div>
+        <div id="hello-world" hx-get="/docs/hello-world/index.md" hx-target="#content" class="tab"
+          hx-swap="transition:true" hx-on:click="handleClick('/docs/hello-world')">Hello World</div>
+      </div>
+      <div id="content" hx-get="/docs/index.md" hx-trigger="load">
+        <span class="htmx-indicator" id="loading">Loading...</span>
+      </div>
+    </div>
+  </section>
+</body>
+
+<script>
+  // Handle content routing
+  const {fromPath} = hxql;
+  fromPath(htmx, "content", "/index.md")
+
+  // Handle path changes
+  const handleClick = (route) => {
+    window.history.pushState({}, '', route);
+
+    // Remove active class from all tabs
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => tab.classList.remove('tab--active'));
+
+    const tab = document.getElementById(route.replace('/docs/', '')) || document.getElementById("docs");
+    tab.classList.add('tab--active');
+  }
+
+  // Convert markdown to html
+  const converter = new showdown.Converter();
+  const content = document.getElementById('content');
+  content.addEventListener('htmx:afterSwap', (event) => {
+    const markdownContent = event.detail.xhr.response;
+    const htmlContent = converter.makeHtml(markdownContent);
+    content.innerHTML = htmlContent;
+    // Highlight code blocks
+    hljs.highlightAll();
+  });
+
+</script>
+<script src="/scripts/nav.js"></script>
+<script src="/scripts/sidebar.js"></script>
+
+</html>
