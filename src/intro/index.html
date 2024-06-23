@@ -20,7 +20,7 @@
   <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
 
   <!-- Highlight.js CDN -->
-  <link rel="stylesheet" href="/docs/highlight-theme.css">
+  <link rel="stylesheet" href="/intro/highlight-theme.css">
   <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
   <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/languages/javascript.min.js"></script>
 
@@ -34,19 +34,18 @@
       <h1 class="card__title">My Hxql App</h1>
       <div class="tabs">
         <a id="home" href="/" class="tab">Home</a>
-        <a id="docs" href="/docs" class="tab">Docs</a>
-        <a id="blog" href="/blog" class="tab">Blog</a>
+        <a id="intro" href="/intro" class="tab">Intro</a>
         <a href="https://www.github.com/the-devoyage/hxql" class="tab" target="_blank">Github</a>
       </div>
     </div>
     <div style="display: flex;">
       <div class="tabs__column">
-        <div id="docs" hx-get="/docs/index.md" hx-target="#content" class="tab" hx-swap="transition:true"
-          hx-on:click="handleClick('/docs')">Getting Started</div>
-        <div id="hello-world" hx-get="/docs/hello-world/index.md" hx-target="#content" class="tab"
-          hx-swap="transition:true" hx-on:click="handleClick('/docs/hello-world')">Hello World</div>
+        <div id="intro" hx-get="/intro/index.md" hx-target="#content" class="tab" hx-swap="transition:true"
+          hx-on:click="handleClick('/intro')">Getting Started</div>
+        <div id="hello-world" hx-get="/intro/hello-world/index.md" hx-target="#content" class="tab"
+          hx-swap="transition:true" hx-on:click="handleClick('/intro/hello-world')">Recursive Directory Routing</div>
       </div>
-      <div id="content" hx-get="/docs/index.md" hx-trigger="load">
+      <div id="content" hx-get="/intro/index.md" hx-trigger="load">
         <span class="htmx-indicator" id="loading">Loading...</span>
       </div>
     </div>
@@ -61,23 +60,18 @@
   // Handle path changes
   const handleClick = (route) => {
     window.history.pushState({}, '', route);
-
-    // Remove active class from all tabs
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach(tab => tab.classList.remove('tab--active'));
-
-    const tab = document.getElementById(route.replace('/docs/', '')) || document.getElementById("docs");
+    const tab = document.getElementById(route.replace('/intro/', '')) || document.getElementById("intro");
     tab.classList.add('tab--active');
   }
 
-  // Convert markdown to html
   const converter = new showdown.Converter();
   const content = document.getElementById('content');
   content.addEventListener('htmx:afterSwap', (event) => {
     const markdownContent = event.detail.xhr.response;
     const htmlContent = converter.makeHtml(markdownContent);
     content.innerHTML = htmlContent;
-    // Highlight code blocks
     hljs.highlightAll();
   });
 
